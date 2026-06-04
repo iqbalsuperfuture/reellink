@@ -5,7 +5,13 @@
   "private": true,
   "packageManager": "bun@1.3.9",
   "scripts": {
-    "dev": "bun --watch src/server.ts",
+    "dev": "docker compose -f docker-compose.dev.yml up --build",
+    "dev:local": "bun --watch src/server.ts",
+    "dev:detached": "docker compose -f docker-compose.dev.yml up --build -d",
+    "dev:logs": "docker compose -f docker-compose.dev.yml logs -f api",
+    "dev:down": "docker compose -f docker-compose.dev.yml down",
+    "dev:fresh": "docker compose -f docker-compose.dev.yml down -v",
+    "deploy:server": "./scripts/deploy-server.sh",
     "start": "bun src/server.ts",
     "db:create": "bun src/db/create.ts",
     "db:generate": "drizzle-kit generate",
@@ -13,6 +19,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "bun src/db/seed.ts",
+    "db:seed:docker": "docker compose -f docker-compose.dev.yml exec api bun run db:seed",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
